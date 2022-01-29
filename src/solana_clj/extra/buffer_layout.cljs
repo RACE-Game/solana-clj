@@ -2,7 +2,8 @@
   (:refer-clojure :exclude [array])
   (:require
    [solana-clj.publickey :as pubkey]
-   ["buffer" :as buffer]))
+   ["buffer" :as buffer]
+   ["bn.js" :as bn]))
 
 (defn buffer-from
   [^js uint8array]
@@ -30,7 +31,7 @@
 
 (defmethod unpack :u64
   [_ ^js buf]
-  (.readUIntLE buf 0 8))
+  (.readBigUInt64LE buf))
 
 (defmethod size :u64
   [_]
@@ -59,6 +60,14 @@
 (defmethod size :u32
   [_]
   4)
+
+(defmethod unpack :u8
+  [_ ^js buf]
+  (.readUInt8 buf))
+
+(defmethod size :u8
+  [_]
+  1)
 
 (defmethod unpack :pubkey
   [_ ^js buf]
