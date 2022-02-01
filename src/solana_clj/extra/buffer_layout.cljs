@@ -31,7 +31,7 @@
 
 (defmethod unpack :u64
   [_ ^js buf]
-  (.readBigUInt64LE buf))
+  (js/Number (.readBigUInt64LE buf)))
 
 (defmethod size :u64
   [_]
