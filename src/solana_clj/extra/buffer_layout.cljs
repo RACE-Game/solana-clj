@@ -45,6 +45,14 @@
   [_]
   8)
 
+(defmethod unpack :u16
+  [_ ^js buf]
+  (.readUInt16LE buf 0 2))
+
+(defmethod size :u16
+  [_]
+  2)
+
 (defmethod unpack :u32
   [_ ^js buf]
   (.readUInt32LE buf 0 4))
