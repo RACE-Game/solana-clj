@@ -20,10 +20,11 @@
 (def ^:const authority-type-account-owner "AccountOwner")
 (def ^:const authority-type-close-account "CloseAccount")
 
-(defn create-init-account-instruction
-  [^sol/Pukbey program-id ^sol/Pubkey mint ^sol/Pubkey account
-   ^sol/Pubkey owner]
-  (spl-token/Token.createInitAccountInstruction program-id mint account owner))
+(js/console.log "spl-token: " spl-token)
+
+(defn create-initialize-account-instruction
+  [^sol/Pubkey account ^sol/Pubkey mint ^sol/Pubkey owner]
+  (spl-token/createInitializeAccountInstruction account mint owner token-program-id))
 
 (defn get-min-balance-rent-for-exempt-mint
   [^sol/Connection conn]
