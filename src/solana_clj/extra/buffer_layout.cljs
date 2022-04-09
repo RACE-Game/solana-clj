@@ -39,7 +39,7 @@
 
 (defmethod unpack :i64
   [_ ^js buf]
-  (.readIntLE buf 0 8))
+  (.readBigInt64LE buf 0 8))
 
 (defmethod size :u64
   [_]
