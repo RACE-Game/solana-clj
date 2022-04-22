@@ -96,6 +96,10 @@
   [^sol/Connection conn ^sol/Pubkey pubkeys & [commitment]]
   (go (->clj (<p! (.getMultipleAccountsInfo conn (->js pubkeys) commitment)))))
 
+(defn get-parsed-transaction
+  [^sol/Connection conn signature & [commitment]]
+  (go (->clj (<p! (.getParsedTransaction conn signature commitment)))))
+
 (defn get-stack-activation
   [^sol/Connection conn ^sol/Pubkey pubkey & [commitment epoch]]
   (go (<p! (.getStackActivation conn pubkey commitment epoch))))
