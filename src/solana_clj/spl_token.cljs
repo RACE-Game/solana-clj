@@ -20,23 +20,28 @@
 (def ^:const authority-type-account-owner "AccountOwner")
 (def ^:const authority-type-close-account "CloseAccount")
 
-(js/console.log "spl-token: " spl-token)
-
 (defn create-initialize-account-instruction
+  "Construct an InitializeAccount instruction
+  account: New token account
+  mint: Mint account
+  owner: Owner of the new account"
   [^sol/Pubkey account ^sol/Pubkey mint ^sol/Pubkey owner]
-  (spl-token/createInitializeAccountInstruction account mint owner token-program-id))
+  (spl-token/createInitializeAccountInstruction account
+                                                mint
+                                                owner
+                                                token-program-id))
 
-(defn get-min-balance-rent-for-exempt-mint
-  [^sol/Connection conn]
-  (go (<p! (spl-token/Token.getMinBalanceRentForExemptMint conn))))
+;; (defn get-min-balance-rent-for-exempt-mint
+;;   [^sol/Connection conn]
+;;   (go (<p! (spl-token/Token.getMinBalanceRentForExemptMint conn))))
 
-(defn get-min-balance-rent-for-exempt-account
-  [^sol/Connection conn]
-  (go (<p! (spl-token/Token.getMinBalanceRentForExemptAccount conn))))
+;; (defn get-min-balance-rent-for-exempt-account
+;;   [^sol/Connection conn]
+;;   (go (<p! (spl-token/Token.getMinBalanceRentForExemptAccount conn))))
 
-(defn get-min-balance-rent-for-exempt-multisig
-  [^sol/Connection conn]
-  (go (<p! (spl-token/Token.getMinBalanceRentForExemptMultisig conn))))
+;; (defn get-min-balance-rent-for-exempt-multisig
+;;   [^sol/Connection conn]
+;;   (go (<p! (spl-token/Token.getMinBalanceRentForExemptMultisig conn))))
 
 (defn get-associated-token-address
   "Get the address for the associated token account.
