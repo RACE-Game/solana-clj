@@ -1,14 +1,17 @@
 (ns solana-clj.publickey
-  (:require
-   ["@solana/web3.js"        :as sol]
-   [cljs.core.async          :refer [go <!]]
-   [solana-clj.extra.interop :refer [<p!]]))
+  (:require ["@solana/web3.js" :as sol]
+            [cljs.core.async :refer [go <!]]
+            [solana-clj.extra.interop :refer [<p!]]))
 
 (def ^:const MAX_SEED_LENGTH 32)
 
 (extend-type sol/PublicKey
- IEquiv
- (-equiv [o other] (and o other (.equals o other))))
+  IEquiv
+    (-equiv [o other]
+      (try (and o other (.equals o other))
+           (catch js/Error _
+             (js/console.error "PUBLIC CMP ERROR:" o other)
+             false))))
 
 (defn make-public-key
   "Make a new public key.
@@ -61,3 +64,5 @@
   "Return if a pubkey is on the ed25519 curve."
   [uint8array]
   (sol/PublicKey.isOnCurve uint8array))
+
+(def system-program (make-public-key "11111111111111111111111111111111"))

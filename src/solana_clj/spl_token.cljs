@@ -3,7 +3,8 @@
             ["@solana/web3.js" :as sol]
             [cljs-bean.core :refer [->clj bean ->js]]
             [cljs.core.async.interop :refer [<p!]]
-            [cljs.core.async :as a :refer [go <!]]))
+            [cljs.core.async :as a :refer [go <!]]
+            [solana-clj.extra.buffer-layout :as bl]))
 
 (def ^js AccountLayout (bean spl-token/AccountLayout))
 (def ^js MintLayout (bean spl-token/MintLayout))
@@ -80,7 +81,25 @@
   [connection address commitment]
   (go (->clj
         (<p!
-          (spl-token/getMint connection address commitment token-program-id)))))
+         (spl-token/getMint connection address commitment token-program-id)))))
 
-(comment
-  (js/console.log "spl-token: " spl-token))
+(defn create-sync-native-instruction
+  [account]
+  (spl-token/createSyncNativeInstruction account))
+
+(defrecord TokenAccount [address mint owner amount delegate delegated-amount is-initialized
+                         is-frozen is-native rent-exempt-reserve close-authority])
+
+(def token-account-layout
+  (bl/struct ->TokenAccount
+             [:pubkey
+              :pubkey
+              :pubkey
+              :u64
+              :pubkey
+              :u64
+              :bool
+              :bool
+              :bool
+              :u64
+              :pubkey]))
