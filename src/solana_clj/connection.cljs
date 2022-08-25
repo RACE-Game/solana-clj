@@ -1,10 +1,8 @@
 (ns solana-clj.connection
-  (:require
-   ["@solana/web3.js"        :as sol]
-   [cljs.core.async          :as    a
-                             :refer [go]]
-   [solana-clj.extra.interop :refer [<p!]]
-   [cljs-bean.core           :refer [->js ->clj]]))
+  (:require ["@solana/web3.js" :as sol]
+            [cljs.core.async :as a :refer [go]]
+            [solana-clj.extra.interop :refer [<p!]]
+            [cljs-bean.core :refer [->js ->clj]]))
 
 (def ^:const BLOCKHASH_CACHE_TIMEOUT_MS sol/BLOCKHASH_CACHE_TIMEOUT_MS)
 
@@ -57,22 +55,23 @@
   (go (->clj (<p! (.getTokenAccountBalance conn token-address commitment)))))
 
 (defn get-token-accounts-by-owner
-  [^sol/Connection conn ^sol/Pubkey owner-address token-accounts-filter & [commitment]]
+  [^sol/Connection conn ^sol/Pubkey owner-address token-accounts-filter &
+   [commitment]]
   (go (->clj (<p! (.getTokenAccountsByOwner conn
                                             ^sol/Pubkey owner-address
                                             (->js token-accounts-filter)
                                             commitment)))))
 
 (defn get-parsed-token-accounts-by-owner
-  [^sol/Connection conn ^sol/Pubkey owner-address token-accounts-filter & [commitment]]
+  [^sol/Connection conn ^sol/Pubkey owner-address token-accounts-filter &
+   [commitment]]
   (go (->clj (<p! (.getParsedTokenAccountsByOwner conn
                                                   ^sol/Pubkey owner-address
                                                   (->js token-accounts-filter)
                                                   commitment)))))
 
 (defn get-largest-accounts
-  ([^sol/Connection conn]
-   (go (<p! (.getLargestAccounts conn))))
+  ([^sol/Connection conn] (go (<p! (.getLargestAccounts conn))))
   ([^sol/Connection conn config]
    (go (<p! (.getLargestAccounts conn (->js config))))))
 
@@ -128,10 +127,16 @@
   [^sol/Connection conn & [commitment]]
   (go (->clj (<p! (.getRecentBlockhash conn commitment)))))
 
-(defn get-version
-  [^sol/Connection conn]
-  (go (<p! (.getVersion conn))))
+(defn get-version [^sol/Connection conn] (go (<p! (.getVersion conn))))
 
 (defn get-minimum-balance-for-rent-exemption
   [^sol/Connection conn data-length & [commitment]]
   (go (<p! (.getMinimumBalanceForRentExemption conn data-length commitment))))
+
+(defn get-latest-blockhash
+  [^sol/Connection conn opts]
+  (go (->clj (<p! (.getLatestBlockhash conn (->js opts))))))
+
+(defn get-latest-blockhash-and-context
+  [^sol/Connection conn]
+  (go (->clj (<p! (.getLatestBlockhashAndContext conn)))))
