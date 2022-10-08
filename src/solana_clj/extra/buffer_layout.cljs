@@ -24,7 +24,7 @@
 
 (defmethod unpack :i64 [_ ^js buf] (.readBigInt64LE buf 0 8))
 
-(defmethod size :u64 [_] 8)
+(defmethod size :i64 [_] 8)
 
 (defmethod unpack :u16 [_ ^js buf] (.readUInt16LE buf 0 2))
 
