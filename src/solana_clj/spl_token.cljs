@@ -81,25 +81,16 @@
   [connection address commitment]
   (go (->clj
         (<p!
-         (spl-token/getMint connection address commitment token-program-id)))))
+          (spl-token/getMint connection address commitment token-program-id)))))
 
 (defn create-sync-native-instruction
   [account]
   (spl-token/createSyncNativeInstruction account))
 
-(defrecord TokenAccount [address mint owner amount delegate delegated-amount is-initialized
-                         is-frozen is-native rent-exempt-reserve close-authority])
+(defrecord TokenAccount [mint owner amount delegate state is-native
+                         delegated-amount close-authority])
 
 (def token-account-layout
   (bl/struct ->TokenAccount
-             [:pubkey
-              :pubkey
-              :pubkey
-              :u64
-              :pubkey
-              :u64
-              :bool
-              :bool
-              :bool
-              :u64
-              :pubkey]))
+             [:pubkey :pubkey :u64 (bl/option32 :pubkey) :u8 (bl/option32 :u64)
+              :u64 (bl/option32 :pubkey)]))

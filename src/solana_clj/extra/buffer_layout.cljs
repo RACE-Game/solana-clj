@@ -84,6 +84,17 @@
 
 (defn option [type] (->OptionBufferLayout type))
 
+(defrecord Option32BufferLayout [type])
+
+(extend-type Option32BufferLayout
+  IBufferLayout
+    (-size [{:keys [type]}] (+ 4 (size type)))
+    (-unpack [{:keys [type]} ^js buf]
+      (let [opt (.readIntLE buf 0 4)]
+        (when (= opt 1) (unpack type (.slice buf 4))))))
+
+(defn option32 [type] (->Option32BufferLayout type))
+
 (defrecord ArrayBufferLayout [length type])
 
 (extend-type ArrayBufferLayout
